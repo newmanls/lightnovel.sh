@@ -178,7 +178,7 @@ open_previous_chapter() {
 }
 
 print_nav_menu() {
-    # clear
+    clear
     print_msg "${novel_name} (${chapter_num}/${chapter_count})"
     [ ${chapter_num} -lt ${chapter_count} ] && print_list_item "N" "Next chapter"
     [ ${chapter_num} -gt 1 ] && print_list_item "P" "Previous chapter"
@@ -190,7 +190,7 @@ print_nav_menu() {
 
     printf "\n"
     prompt "" "user_input"
-    # clear
+    clear
 
     case "${user_input,}" in
         n) [ ${chapter_num} -lt ${chapter_count} ] && open_next_chapter ;;
@@ -205,7 +205,7 @@ print_nav_menu() {
 }
 
 print_homescreen() {
-    # clear
+    clear
     history_items=($(
         cat "${HISTORY}" | awk -F '|' '{printf "%s - Chapter %s\n",$1,$2}'
     ))
@@ -220,7 +220,7 @@ print_homescreen() {
     print_list_item "Q" "Exit"
     printf "\n"
     prompt "" "user_input"
-    # clear
+    clear
 
     case "${user_input,}" in
         [1-${history_count}])
