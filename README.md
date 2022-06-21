@@ -1,10 +1,11 @@
 # lightnovel.sh
 
-A terminal-based lightnovel reader written in Bash. It scrapes [freewebnovel](https://freewebnovel.com/)
+A terminal-based lightnovel reader written in Bash. It scrapes [freewebnovel](https://freewebnovel.com/).
+
+![preview](https://user-images.githubusercontent.com/75286649/174728555-0d3b288d-4aba-473a-9779-e2d7d925eb90.gif)
 
 ## Table of Contents
 
-* [Table of Contents](#table-of-contents)
 * [Features](#features)
 * [Installation](#installation)
   * [Linux](#linux)
