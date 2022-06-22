@@ -8,6 +8,7 @@ A terminal-based lightnovel reader written in Bash. It scrapes [freewebnovel](ht
 
 * [Features](#features)
 * [Installation](#installation)
+  * [Arch Linux](#arch-linux)
   * [Linux](#linux)
 * [Usage](#usage)
 * [Credits](#credits)
@@ -23,6 +24,12 @@ A terminal-based lightnovel reader written in Bash. It scrapes [freewebnovel](ht
 [^1]: This can be easily changed by editing the `HISTORY_LENGHT` variable on the script.
 
 ## Installation
+
+### Arch Linux
+
+```sh
+yay -S lightnovel.sh-git
+```
 
 ### Linux
 
