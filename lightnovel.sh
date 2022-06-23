@@ -34,7 +34,7 @@ add_to_history() {
     new_history_entry="${novel_name}|${chapter_num}|${novel_url}|${chapter_url}"
 
     if [ -s "${HISTORY}" ]; then
-        history="$(cat "${HISTORY}" | grep -v "^${novel_name}|" |
+        history="$(grep -v "^${novel_name}" "${HISTORY}" |
             head -n $((HISTORY_LENGHT - 1)))"
         printf "%s\n%s" "${new_history_entry}" "${history}" > "${HISTORY}"
     else
@@ -45,14 +45,14 @@ add_to_history() {
 
 load_history_item() {
     IFS='|' read -r novel_name chapter_num novel_url chapter_url < \
-        <(sed "${1}q;d" ${HISTORY})
+        <(sed "${1}q;d" "${HISTORY}")
 }
 
 check_number_input() {
     max_num="${1:--1}"
     input_num="${2:--1}"
 
-    if [ ${input_num} -ge 1 ] && [ ${input_num} -le ${max_num} ]; then
+    if [ "${input_num}" -ge 1 ] && [ "${input_num}" -le "${max_num}" ]; then
         return 1
     else
         print_error "Invalid selection"
@@ -105,7 +105,7 @@ search_novel() {
 }
 
 select_novel() {
-    if [ ${scraped_novel_count} -gt 1 ]; then
+    if [ "${scraped_novel_count}" -gt 1 ]; then
         printf "\n"
         prompt "Select novel (1-${scraped_novel_count}): " "selected_novel_num"
     else
@@ -156,13 +156,13 @@ retrieve_chapter() {
 }
 
 open_chapter() {
-    w3m -T text/html -cols $(tput cols) <<< "${retrieved_chapter}" |
+    w3m -T text/html -cols "$(tput cols)" <<< "${retrieved_chapter}" |
         ${PAGER:-less}
     print_nav_menu
 }
 
 open_next_chapter() {
-    if [ ${chapter_num} -lt ${chapter_count} ]; then
+    if [ "${chapter_num}" -lt "${chapter_count}" ]; then
         chapter_num=$((chapter_num + 1))
         chapter_url="${chapter_prefix}${chapter_num}.html"
         retrieve_chapter
@@ -180,9 +180,9 @@ open_previous_chapter() {
 print_nav_menu() {
     clear
     print_msg "${novel_name} (${chapter_num}/${chapter_count})"
-    [ ${chapter_num} -lt ${chapter_count} ] && print_list_item "N" "Next chapter"
-    [ ${chapter_num} -gt 1 ] && print_list_item "P" "Previous chapter"
-    [ ${chapter_count} -gt 1 ] && print_list_item "C" "Select chapter"
+    [ "${chapter_num}" -lt "${chapter_count}" ] && print_list_item "N" "Next chapter"
+    [ "${chapter_num}" -gt 1 ] && print_list_item "P" "Previous chapter"
+    [ "${chapter_count}" -gt 1 ] && print_list_item "C" "Select chapter"
     print_list_item "O" "Reopen current chapter"
     print_list_item "S" "Search another novel"
     print_list_item "H" "Go to home screen"
@@ -192,10 +192,10 @@ print_nav_menu() {
     prompt "" "user_input"
     clear
 
-    case "${user_input,}" in
-        n) [ ${chapter_num} -lt ${chapter_count} ] && open_next_chapter ;;
-        p) [ ${chapter_num} -gt 1 ] && open_previous_chapter ;;
-        c) [ ${chapter_count} -gt 1 ] && select_chapter ;;
+    case "${user_input}" in
+        n) [ "${chapter_num}" -lt "${chapter_count}" ] && open_next_chapter ;;
+        p) [ "${chapter_num}" -gt 1 ] && open_previous_chapter ;;
+        c) [ "${chapter_count}" -gt 1 ] && select_chapter ;;
         o) open_chapter ;;
         s) search_novel ;;
         h) print_homescreen ;;
@@ -207,7 +207,7 @@ print_nav_menu() {
 print_homescreen() {
     clear
     history_items=($(
-        cat "${HISTORY}" | awk -F '|' '{printf "%s - Chapter %s\n",$1,$2}'
+        awk -F '|' '{printf "%s - Chapter %s\n",$1,$2}' "${HISTORY}"
     ))
     history_count="${#history_items[@]}"
 
@@ -222,9 +222,9 @@ print_homescreen() {
     prompt "" "user_input"
     clear
 
-    case "${user_input,}" in
+    case "${user_input}" in
         [1-${history_count}])
-            load_history_item ${user_input}
+            load_history_item "${user_input}"
             retrieve_chapter ;;
         s) search_novel ;;
         q) exit 0 ;;
@@ -233,7 +233,7 @@ print_homescreen() {
 }
 
 print_help() {
-    printf "A terminal-based lightnovel reader written in Bash.
+    printf "%s" "A terminal-based lightnovel reader written in Bash.
 
 USAGE:
   lightnovel.sh [OPTION]
