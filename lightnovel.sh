@@ -2,7 +2,7 @@
 
 VERSION="0.1"
 CACHEDIR="${XDG_CACHE_HOME:-$HOME/.cache}/lightnovel.sh"
-DEPENDENCIES=("awk" "cat" "curl" "grep" "head" "less" "mkdir" "sed" "tput" "tr" "w3m")
+DEPENDENCIES=("cat" "curl" "grep" "head" "less" "mkdir" "sed" "tput" "tr" "w3m")
 
 IFS=$'\n'
 RED="\033[1;31m"
@@ -219,7 +219,7 @@ print_homescreen() {
     clear
     history_items=()
     while read -r line; do
-        history_items+=("$(awk -F '|' '{printf "%s - Chapter %s\n",$1,$2}' <<< "${line}")")
+        history_items+=("$(sed -e 's/\(.*|[0-9]*\)|.*/\1/' -e 's/|/ - Chapter /g' <<< "${line}")")
     done <<< "$(cat "${HISTORY}")"
     history_count="${#history_items[@]}"
 
