@@ -79,6 +79,7 @@ get_chapter_prefix() {
 
 search_novel() {
     prompt "Search novel: " "searchkey"
+    searchkey="${searchkey//\'/\'\'}"
     print_msg "Searching for '${searchkey}'..."
 
     params="searchkey=${searchkey}"
@@ -87,8 +88,17 @@ search_novel() {
     check_download "${scraped_results}"
 
     scraped_results=$(grep '<h3 class="tit"><a' <<< "${scraped_results}")
-    result_titles=($(sed 's/^.*title="//;s/">.*$//' <<< "${scraped_results}"))
-    result_urls=($(sed 's/^.*href="//;s/".*$//' <<< "${scraped_results}"))
+
+    result_titles=()
+    while read -r line; do
+        result_titles+=("$(sed 's/^.*title="//;s/">.*$//' <<< "${line}")")
+    done <<< "${scraped_results}"
+
+    result_urls=()
+    while read -r line; do
+        result_urls+=("$(sed 's/^.*href="//;s/".*$//' <<< "${line}")")
+    done <<< "${scraped_results}"
+
     scraped_novel_count="${#result_titles[@]}"
 
     if [ "${scraped_novel_count}" = "0" ]; then
@@ -192,6 +202,7 @@ print_nav_menu() {
     prompt "" "user_input"
     clear
 
+    user_input="${user_input:0:1}"
     case "${user_input}" in
         n) [ "${chapter_num}" -lt "${chapter_count}" ] && open_next_chapter ;;
         p) [ "${chapter_num}" -gt 1 ] && open_previous_chapter ;;
@@ -206,9 +217,10 @@ print_nav_menu() {
 
 print_homescreen() {
     clear
-    history_items=($(
-        awk -F '|' '{printf "%s - Chapter %s\n",$1,$2}' "${HISTORY}"
-    ))
+    history_items=()
+    while read -r line; do
+        history_items+=("$(awk -F '|' '{printf "%s - Chapter %s\n",$1,$2}' <<< "${line}")")
+    done <<< "$(cat "${HISTORY}")"
     history_count="${#history_items[@]}"
 
     print_msg "Continue reading:"
