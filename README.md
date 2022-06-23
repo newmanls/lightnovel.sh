@@ -62,7 +62,7 @@ USAGE:
   lightnovel.sh [OPTION]
 
 OPTIONS:
-  -c, --clear-cache     Clear cache (/home/newman/.cache/lightnovel.sh)
+  -c, --clear-cache     Clear cache
   -h, --help            Print this help page
   -l, --last-session    Restore last session
   -V, --version         Print version number
