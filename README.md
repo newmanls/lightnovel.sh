@@ -38,7 +38,7 @@ yay -S lightnovel.sh-git
 Make sure you have these installed
 
 ```text
-awk cat curl grep head less mkdir sed tput tr w3m
+cat curl grep head less mkdir sed tput tr w3m
 ```
 
 #### Installing
