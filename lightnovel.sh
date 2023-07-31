@@ -15,7 +15,7 @@ green="\033[1;32m"
 blue="\033[1;34m"
 white="\033[1;37m"
 default="\033[0m"
-url='https://freewebnovel.com'
+url='https://innread.com'
 history="${cache_dir}/history"
 history_lenght=20
 
